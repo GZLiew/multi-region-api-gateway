@@ -1,0 +1,42 @@
+service: hello-world-api
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'dev'}
+  stackName: ${self:service}
+  region: ${self:custom.stageConfig.awsRegion}
+  memorySize: 128
+  deploymentBucket:
+    blockPublicAccess: true
+    name: tap-sls-${self:provider.region}-${self:provider.stage}
+
+functions:
+  helloworld:
+    handler: index.handler
+    events:
+      - httpApi:
+          path: /helloworld
+          method: get
+
+  healthcheck:
+    handler: healthcheck.handler
+    events:
+      - httpApi:
+          path: /healthcheck
+          method: get
+
+resources:
+  Outputs:
+    RestAPIID:
+      Description: Rest API ID
+      Value: !Ref helloworld
+    HealthcheckApiUrl:
+      Description: URL of your API endpoint
+      Value: !Join
+        - ""
+        - - https://
+          - !Ref healthcheck
+          - ".execute-api."
+          - !Ref "AWS::Region"
+          - ".amazonaws.com/prod"

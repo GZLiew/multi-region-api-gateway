@@ -1,0 +1,17 @@
+{
+  "name": "multi-region-api-gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "gzliew",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.1209.0"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
